@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DummyData;
+using reactnet_tutorial.Models;
 using Microsoft.EntityFrameworkCore;
 namespace reactnet_tutorial
 {
@@ -29,8 +29,7 @@ namespace reactnet_tutorial
             {
                 configuration.RootPath = "ClientApp/build";
             });
-             services.AddDbContext<DummyDataContext>(options =>
-                options.UseSqlServer("Persist Security Info=False;Integrated Security=SSPI;database=Dummy;server=(local)"));
+             services.AddDbContext<DummyContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
