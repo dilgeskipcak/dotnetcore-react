@@ -32,9 +32,8 @@ namespace reactnet_tutorial.Models
         {
             modelBuilder.Entity<Telephone>(entity =>
             {
-                entity.HasNoKey();
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasIndex(e => e.Id, "IX_Telephones")
+                    .IsUnique();
 
                 entity.Property(e => e.PhoneNumber)
                     .IsRequired()
@@ -44,11 +43,6 @@ namespace reactnet_tutorial.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasNoKey();
-
-                entity.HasIndex(e => e.Id, "IX_Users")
-                    .IsUnique();
-
                 entity.Property(e => e.IdentityNumber)
                     .IsRequired()
                     .HasMaxLength(20)

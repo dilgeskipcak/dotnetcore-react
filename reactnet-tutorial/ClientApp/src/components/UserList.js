@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
 import  { fetchDataFromDataBase,deleteDataFromDataBase } from '../functions/DummyServices'
+import  { trimStringFields } from '../functions/CommonFunctions'
+import { UpdateUser } from './UpdateUser';
+import './modal.css'
 
 export class UserList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { userList: [], userListLoaded: false };
+    this.state = { userList: [], userListLoaded: false ,updateModalVisible: false };
     this.listUsers = this.listUsers.bind(this);
+    this.closeUpdateModal = this.closeUpdateModal.bind(this);
   }
 
   listUsers(userList) {
     this.setState({
       userList: [...userList],
-      userListLoaded: true
+      userListLoaded: true,
+      updateModalVisible: false
     });
   }
 
   async getUsers() {
       this.setState({userList: [], userListLoaded: false});
       var data = await fetchDataFromDataBase("GetUsers");
+      data.forEach(user => {
+        trimStringFields(user);
+      });
       this.listUsers(data);
       console.table(data);
   }
@@ -29,6 +37,18 @@ export class UserList extends Component {
         this.listUsers(this.state.userList?.filter(t => t.id != userId));
       }
     });
+  }
+  openUpdateModal(user) {
+    this.user = user;
+    this.setState({
+      userList: this.state.userList,
+      userListLoaded: true,
+      updateModalVisible: true
+    });
+  }
+  closeUpdateModal(result) {
+    
+    this.getUsers();
   }
 
   render() {
@@ -58,10 +78,21 @@ export class UserList extends Component {
               <td>
                 <button className="btn btn-danger btn-sm" onClick={() => this.deleteById(user.id)}>Delete!</button>
               </td>
+              <td>
+                <button className="btn btn-info btn-sm" onClick={() => this.openUpdateModal(user)}>Update!</button>
+              </td>
             </tr>
           )}
         </tbody>
       </table>}
+
+      {
+        this.state.updateModalVisible &&<div className='modal  display-block'>
+            <div className='modal-main'>
+            <UpdateUser callBack={this.closeUpdateModal} user={this.user}/>
+            </div>
+           </div>
+      }
         
         
 

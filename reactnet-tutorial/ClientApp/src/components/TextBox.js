@@ -18,14 +18,12 @@ export class TextBox extends Component {
   
 
   render() {
-    if(this.ref?.current?.value)
-        this.ref.current.value = '';
     return (
         <div className="input-group mb-3">
             <div className="input-group-prepend">
                 <span className="input-group-text">{this.props.label}</span>
             </div>
-            <input ref={this.ref} type={'text'} className='input-group-text' onChange={this.onChange}></input>
+            <input ref={this.ref} type={'text'} className='input-group-text' onChange={this.onChange} defaultValue={this.props.defaultValue}></input>
         </div>
     );
   }

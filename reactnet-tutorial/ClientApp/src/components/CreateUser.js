@@ -1,27 +1,22 @@
 import React, { Component } from 'react';
+import { createUser } from '../functions/DummyServices';
 import { TextBox } from './TextBox';
 export class CreateUser extends Component {
 
   constructor(props) {
-    let user;
     super(props);
     this.user = {};
   }
-
-  listTelephones(userTelephones) {
-    this.setState({isLoading: false});
-  }
-
-  
   create() {
     this.setState({isLoading:true});
-    console.log(this.user);
-    this.user = {};
-    this.setState({isLoading:false});
+    createUser(this.user).then(response => {
+      this.user = {};
+      console.log(response);
+      this.setState({isLoading:false});
+    }).catch(e => console.error(e));
   }
 
   render() {
-    console.log("rendered");
     return (
       <div>
         <h1>Create User</h1>
@@ -33,6 +28,7 @@ export class CreateUser extends Component {
         <TextBox label="Identity Number" callBack={(data) => this.user.IdentityNumber = data}/>
         <TextBox label="User Name" callBack={(data) => this.user.UserName = data}/>
         <TextBox label="Password" callBack={(data) => this.user.Password = data}/>
+        <TextBox label="PhoneNumber" callBack={(data) => this.user.PhoneNumber = data}/>
     <button className="btn btn-primary" onClick={() => this.create()}>Create!</button>
       </div>
     );
